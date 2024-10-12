@@ -2,11 +2,11 @@
 POC for demonstrating realtime communication between MQTT->Kafka->SignalR->ASP.Net web chart with VueJS integration (for quick DOM Manipulation)
 
 # System Requirement
-.NET 6 and above
-Kafka server 
-Custom MQtt Kafka Source Connector solution-> 
-MQtt Broker -> 
-ESP32 or Wokwi Simulation ->
+* .NET 6 and above
+* Kafka server 
+* Custom MQtt Kafka Source Connector solution-> 
+* MQtt Broker -> 
+* ESP32 or Wokwi Simulation ->
 
 # Step to run
 1) Run or connect to a kafka server 
