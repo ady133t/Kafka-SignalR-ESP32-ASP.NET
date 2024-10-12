@@ -1,4 +1,4 @@
-# Realtime ESP32->MQTT->Kafka->SignalR to ASP.NET Core Dashboard
+# Realtime ESP32->MQTT->Kafka->SignalR to ASP.NET Core MVC Dashboard
 POC for demonstrating realtime communication between MQTT->Kafka->SignalR->ASP.Net web chart with VueJS integration (for quick DOM Manipulation)
 
 # System Requirement
