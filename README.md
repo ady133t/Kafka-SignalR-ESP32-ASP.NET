@@ -14,7 +14,7 @@ POC for demonstrating realtime communication between MQTT->Kafka->SignalR->ASP.N
 3) Run the EF core migration to your database in this project.
 4) Run this project > Task > Add device name as ESP32-01 (will be used as an kafka topic)
 5) Edit appsettings.json from MQtt Kafka Source Connector solution to  setup Kafka,mqtt broker, SQL connection string
-6) Run the Connector
+6) Run the Connector (preferable Container such as Docker)
 7) Run your ESP32 or the Wokwi simulation with the code provided.
 
 # Features
