@@ -1,0 +1,140 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - My_Dashboard</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @* <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> *@
+   @*  <link rel="stylesheet" href="~/My_Dashboard.styles.css" asp-append-version="true" /> *@
+    <link href="~/css/lineicons/web-font-files/lineicons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/style.css" />
+@*     <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
+</head>
+<body>
+    <environment names="Development">
+        <script src="~/dist/main.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/dist/main.js" asp-append-version="true"></script>
+    </environment>
+
+  <div class="wrapper">
+      <aside id="sidebar" class="">
+            <div class="d-flex">
+                <button class="toggle-btn" type="button">
+                    <i class="lni lni-grid-alt"></i>
+                </button>
+                <div class="sidebar-logo">
+                    <a href="#">Kafka-SignalR</a>
+                </div>
+            </div>
+              <ul class="sidebar-nav">
+                  <li class="sidebar-item">
+                      <a href="~/home/index" class="sidebar-link">
+                            <i class="lni lni-user"></i>
+                            <span>Real Time Chart</span>
+                      </a>
+                  </li>
+                     <li class="sidebar-item">
+                    <a href="~/ManageDevice/index" class="sidebar-link">
+                            <i class="lni lni-agenda"></i>
+                            <span>Task</span>
+                        </a>
+                    </li> 
+ @*                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                            <i class="lni lni-protection"></i>
+                            <span>Auth</span>
+                        </a>
+                            <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                                <li class="sidebar-item">
+                                    <a href="#" class="sidebar-link">
+                                        Login
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="#" class="sidebar-link">
+                                        Register
+                                    </a>
+                                </li>
+                            </ul>
+                        
+                    </li> *@
+@*                     <li class="sidebar-item">
+                        <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
+                            <i class="lni lni-layout"></i>
+                            <span>Multi Level</span>
+                        </a>
+                        <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#multi-two" aria-expanded="false" aria-controls="multi-two">
+                                    Two Links
+                                </a>
+                                <ul id="multi-two" class="sidebar-dropdown list-unstyled collapse">
+                                    <li class="sidebar-item">
+                                        <a href="#" class="sidebar-link">Link 1</a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="#" class="sidebar-link">Link 2</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            
+
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <i class="lni lni-popup"></i>
+                            <span>Notification</span>
+                        </a>
+                    </li> *@
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <i class="lni lni-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+              </ul>
+              <div class="sidebar-footer">
+                  <a href="#" class="sidebar-link">
+                      <i class="lni lni-exit"></i>
+                      <span>Logout</span>
+                  </a>
+              </div>
+          
+      </aside>
+        <div class="main col d-flex flex-column">
+            <main class="row overflow-auto">
+                <div class="col pt-4">
+                    @RenderBody()
+                </div>
+            </main>
+            <div class="row bg-light py-4 mt-auto text-center">
+                <div class="col"> Proof-Of-Concept </div>
+            </div>
+
+    </div>
+    </div>
+
+ @*    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div> *@
+
+@*     <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - My_Dashboard - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer> *@
+   
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+   @*  <script src="~/js/site.js" asp-append-version="true"></script> *@
+   @*  @await RenderSectionAsync("Scripts", required: false) *@
+
+    <script src="~/js/script.js"></script>
+</body>
+</html>

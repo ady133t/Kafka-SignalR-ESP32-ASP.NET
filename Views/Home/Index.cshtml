@@ -1,0 +1,211 @@
+﻿@model IEnumerable<My_Dashboard.Models.DB.Machine>
+
+<div class="content-wrapper" id="myArea">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Machine Utilization</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="container-fluid">
+
+@*             <button @@click="change" value="click me">click me {{text}}</button>
+ *@            <div v-for="machine in machines" >
+                <div class="row">
+                    <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-header border-0">
+                            <div class="d-flex justify-content-between"></div>
+                            <span class="card-title">Machine {{machine.name}}</span>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <h6 class="card-title">Temperature</h6>
+                            @*      <div :id="machine.id">{{machine.id}}</div> *@
+                                    <canvas :id="'cpuChart' + machine.name"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                <div class="col-sm-4">
+                    <div class="card mt-lg-6">
+                    @*     <div class="card-header border-0">
+                            <div class="d-flex justify-content-between"></div>
+                            <span class="card-title">Machine 0</span>
+                        </div> *@
+                         
+                        <div class="card-body">
+                            <div>
+                                <h6 class="card-title">Humidity</h6>
+                                    <canvas :id="'ramChart' + machine.name"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    
+            </div>
+
+                <div class="my-4 custom-divider"></div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+  .custom-divider {
+        height: 0; /* No height */
+        border-top: 1px solid black; /* 0.25px height border */
+       
+  }
+</style>
+<!-- Chart.js and Vue.js Initialization -->
+<script src="~/lib/vue/vue.global.js"></script>
+<script src="~/lib/chartjs/Chart.min.js"></script>
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+
+<script>
+    const { createApp, ref, onMounted } = Vue;
+    
+    createApp({
+        setup() {
+            // Initialize Vue app with data passed from Razor
+            const machinesData = @Html.Raw(Json.Serialize(Model));
+            console.log(machinesData);
+
+            const machines = ref(machinesData);
+            
+            const ChartMap = new Map();
+
+            const chartInstance1 = ref(null); // Reference to the Chart.js instance
+            const chartInstance2 = ref(null); // Reference to the Chart.js instance
+
+
+            
+
+            var text = ref("test");
+
+            function change() { 
+                text.value = "test1";
+            
+            };
+            onMounted(() => {
+
+                machines.value.forEach(machine => {
+                    console.log(machine);
+                    const cpuctx = document.getElementById('cpuChart' + machine.name).getContext('2d');
+                    chartInstance1.value = new Chart(cpuctx, {
+                        type: 'line', // Line chart
+                        data: {
+                            labels: [], // Initial labels
+                            datasets: [{
+                                label: 'Temperature',
+                                data: [], // Initial data
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+
+                    
+
+                    const ramctx = document.getElementById('ramChart' + machine.name).getContext('2d');
+                    chartInstance2.value = new Chart(ramctx, {
+                        type: 'bar', // Line chart
+                        data: {
+                            labels: [], // Initial labels
+                            datasets: [{
+                                label: 'Humidity',
+                                data: [], // Initial data
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+
+                    ChartMap.set(machine.name + "_line", chartInstance1.value);
+                    ChartMap.set(machine.name + "_bar", chartInstance2.value);
+                
+                });
+
+                
+
+                // Establish connection to SignalR hub
+                const connection = new signalR.HubConnectionBuilder()
+                    .withUrl("/signalHub") // URL of your SignalR hub
+                    .withAutomaticReconnect() // Enable AutoReconnect
+                    //.configureLogging(signalR.LogLevel.Information)
+                    .build();
+
+                connection.start().then(function () {
+                    console.log("SignalR Connected.");
+                }).catch(function (err) {
+                    console.error("SignalR Connection Error: " + err.toString());
+                });
+
+
+                machinesData.forEach(machine => {
+                    // Receive data from SignalR hub and update chart
+                    connection.on("onReceiveCPU_" + machine.name + "_kafka", function (newLabel,temp,humi) {
+                        console.log("received message." + machine.name + "_kafka");
+                        //console.log(dataPoint);
+                        //console.log(cpuChartMap.get(machine.machineId));
+                        const maxLabels = 10; // Maximum allowed labels
+                        //const newLabel = `Label ${chartInstance.value.data.labels.length + 1}`;
+
+                        // Add new data to the chart
+                        ChartMap.get(machine.name + "_line").data.labels.push(newLabel);
+                        ChartMap.get(machine.name + "_line").data.datasets[0].data.push(temp);
+
+                        // Ensure the chart only displays a maximum of 10 data points
+                        if (ChartMap.get(machine.name + "_line").data.labels.length > maxLabels) {
+                            ChartMap.get(machine.name + "_line").data.labels.shift(); // Remove the oldest label
+                            ChartMap.get(machine.name + "_line").data.datasets[0].data.shift(); // Remove the oldest data point
+                        }
+
+                        // Update the chart
+                        ChartMap.get(machine.name + "_line").update();
+
+                        ChartMap.get(machine.name + "_bar").data.labels.push(newLabel);
+                        ChartMap.get(machine.name + "_bar").data.datasets[0].data.push(humi);
+
+                        // Ensure the chart only displays a maximum of 10 data points
+                        if (ChartMap.get(machine.name + "_bar").data.labels.length > maxLabels) {
+                            ChartMap.get(machine.name + "_bar").data.labels.shift(); // Remove the oldest label
+                            ChartMap.get(machine.name + "_bar").data.datasets[0].data.shift(); // Remove the oldest data point
+                        }
+
+                        // Update the chart
+                        ChartMap.get(machine.name + "_bar").update();
+                    });
+                });
+            });
+
+            return { machines, text,change };
+        }
+    }).mount('#myArea');
+</script>
