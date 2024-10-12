@@ -5,7 +5,7 @@ POC for demonstrating realtime communication between MQTT->Kafka->SignalR->ASP.N
 * .NET 6 and above
 * Kafka server 
 * Custom MQtt Kafka Source Connector solution-> 
-* MQtt Broker -> 
+* Cloud MQtt Broker -> https://www.emqx.com/en
 * ESP32 or Wokwi Simulation ->
 
 # Step to run
