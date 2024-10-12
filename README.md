@@ -6,7 +6,7 @@ POC for demonstrating realtime communication between MQTT->Kafka->SignalR->ASP.N
 * Local or Cloud Kafka server 
 * Custom MQtt Kafka Source Connector solution-> 
 * Public MQtt Broker -> https://www.emqx.com/en/mqtt/public-mqtt5-broker
-* ESP32 or Wokwi Simulation ->
+* ESP32 Wokwi Simulation -> https://github.com/ady133t/ESP32-MQTT-PlatformIO-Wokwi.git
 
 # Step to run
 1) Run or connect to a kafka server 
