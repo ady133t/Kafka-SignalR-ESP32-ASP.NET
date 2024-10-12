@@ -19,5 +19,5 @@ POC for demonstrating realtime communication between MQTT->Kafka->SignalR->ASP.N
 
 # Features
 * EF Core (Code First)
-* Dependency Injection (Background Service,DBContext, SignalR)
-* Async Operation for multiple kafka topics for each devices
+* Dependency Injection (Background Service,EF DBContext, SignalR)
+* Async Operation for handling multiple kafka topics for each devices
